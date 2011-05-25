@@ -1,0 +1,15 @@
+==Scripts==
+
+This is a bash (mainly) scripts library -- a scriptorium!
+
+The scripts are mostly targeted to give solutions to specific issues and automate minor processes in order to have a good size-to-usability ratio.
+
+===Current status===
+
+The scripts currently added:
+
+ * populate: installs the .rc files and numerous vim plugins.
+ * doc: converts javadoc to .pdf, removing menues etc.
+ * cold-start: installs main programs and dependencies in debian linux.
+ * < >: creates an svn server project and integrates it with trac.
+
