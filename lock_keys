@@ -1,5 +1,8 @@
 #!/bin/bash
 icon="/usr/share/icons/Humanity/devices/32/keyboard.svg"
+icon="/usr/share/icons/AwOken/clear/24x24/status/ibus-keyboard.svg"
+icon="/usr/share/icons/AwOken/clear/128x128/status/ibus-keyboard.svg"
+icon="/usr/share/icons/AwOken/clear/128x128/devices/kxkb.png"
 case $1 in
  'scrl')
  mask=3
