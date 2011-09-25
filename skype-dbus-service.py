@@ -47,9 +47,6 @@ class Service (dbus.service.Object):
         out_connection.Invoke('NAME mySkypeController')
         out_connection.Invoke('PROTOCOL 5')
         fullname = ' '.join(out_connection.Invoke('GET USER ' + skypename + ' FULLNAME').split()[3:])
-        f = open("/home/nikos/Desktop/dbg.txt", "a")
-        f.write("test1")
-        f.close()
         if 'ChatIncoming' in event:
             if not isConversationActive(fullname):
                 #if not isIndicated(skypename):
