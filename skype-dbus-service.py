@@ -51,10 +51,9 @@ class Service (dbus.service.Object):
             if not isConversationActive(fullname):
                 #if not isIndicated(skypename):
                 #    addIndicator(event, skypename)
-                #n = pynotify.Notification(skypename, skypemessage, "skype")
-                #n.set_hint_string('append', 'allowed')
-                #n.show()
-                showNotification(skypename, "WA!", "skype", False)
+                n = pynotify.Notification(skypename, skypemessage, "skype")
+                n.set_hint_string('append', 'allowed')
+                n.show()
                 if not isIndicated(skypename):
                     mm_source = indicate.Indicator()
                     mm_source.set_property("subtype", "im")
@@ -218,7 +217,7 @@ def showNotification(summary, message, icon, append):
     n = pynotify.Notification(summary, message, icon)
     if append:
         print "append"
-    n.set_hint_string('append', 'allowed')
+        n.set_hint_string('append', 'allowed')
     n.show()
 
 def addIndicator(event, contact):
@@ -286,7 +285,6 @@ if __name__ == "__main__":
     server = indicate.indicate_server_ref_default()
     server.set_type("message.im")
     server.set_desktop_file("/usr/share/skype-notify-improved/skype.desktop")
-#    server.set_desktop_file("/usr/share/applications/skype.desktop")
     server.connect("server-display", server_display_cb)
 
     server.show()
