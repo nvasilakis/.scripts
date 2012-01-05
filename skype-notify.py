@@ -2,6 +2,7 @@
 #    Python script to make Skype use notify-osd
 
 # Copyright (c) 2009, 2010, Lightbreeze
+# heavily modified by nvasilakis
 
 # 
 # This program is free software: you can redistribute it and/or modify
