@@ -20,4 +20,6 @@ case $1 in
 	gloobus-preview "$cheatFolder/emacs.pdf" ;;
     '2' )
 	gloobus-preview "$cheatFolder/vim.pdf" ;;
+    '3' )
+	gloobus-preview "$cheatFolder/dvorak.jpg" ;;
 esac
