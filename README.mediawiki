@@ -8,19 +8,25 @@ ratio. Many scripts can be combined for added functionality!
 
 ===Current status===
 
-The scripts currently added:
+The bash scripts currently added:
 
-  * bk.sh :             repository backups aid
-  * cheatview.sh :      blazingly fast refcard view at your fingertips
-  * continuity.sh :     automatically create svn repos with the use of trac
-  * doc.sh :            clean and bundle javadoc in pdf format
-  * generateTests.sh :  test generation for 100% path coverage
-  * lock_keys.sh :      show on/off notification on caps/num/etc lock
-  * mujava.sh :         automate mutation analysis
-  * multizip.sh :       archive multiple directories
-  * populate.sh :       generate dorc files and folders, and crete git profiles
-  * print.sh :          distribute documents among printers with page/hour limits
-  * rename.sh :         minimal move
-  * repo-git.sh :       create git bare repos with apache authentication
-  * solarize.sh :       change terminal color handling on-the-fly
-  * writeInfoSVN.sh :   report subversion info in html format
+  * bk.sh :                 repository backups aid
+  * cheatview.sh :          blazingly fast refcard view at your fingertips
+  * continuity.sh :         automatically create svn repos with the use of trac
+  * doc.sh :                clean and bundle javadoc in pdf format
+  * generateTests.sh :      test generation for 100% path coverage
+  * lock_keys.sh :          show on/off notification on caps/num/etc lock
+  * mujava.sh :             automate mutation analysis
+  * multizip.sh :           archive multiple directories
+  * populate.sh :           generate dorc files and folders, and crete git profiles
+  * print.sh :              distribute documents among printers with page/hour limits
+  * rename.sh :             minimal move
+  * repo-git.sh :           create git bare repos with apache authentication
+  * solarize.sh :           change terminal color handling on-the-fly
+  * writeInfoSVN.sh :       report subversion info in html format
+
+The python scripts currently added:
+
+
+  * skype-dbus-service.py :  pushes skype messages to libnotify
+  * skype-notify.py :        hendle the rest of the messages

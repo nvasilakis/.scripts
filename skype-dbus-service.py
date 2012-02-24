@@ -5,6 +5,8 @@
 #Authors:
 #    Ned Hoy <nedhoy@gmail.com>
 #    Modified heavily by not_insane so it works like it should!
+#    Modified by Nikos Vasilakis to incorporate correct icons, text
+#    addition etc
 #
 #   much code taken from Highly Ubuntu 9.04 Intergrated GMail Notifier https://launchpad.net/gm-notify
 #   and the interwebs
