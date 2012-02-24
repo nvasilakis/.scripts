@@ -1,46 +1,28 @@
 #!/bin/bash - 
-#===============================================================================
+
+##
+# 2011, Nikos Vasilakis
+# n.c.vasilakis@gmail.com
 #
-#          FILE:  doc.sh
-# 
-#         USAGE:  ./doc.sh 
-# 
-#   DESCRIPTION:  A script that alters the entire javadoc set of files, removing
-#                 menus etc, making it easy to convert to pdf format.
-# 
-#  REQUIREMENTS:  Run the script from the top-most dir of the project structure
-#         NOTES:  ---
-#        AUTHOR: Nikos Vasilakis
-#       COMPANY: RACTI
-#       CREATED: 05/20/2011 03:09:29 PM EEST
-#      REVISION: 0.8
-#===============================================================================
+# A script that  alters the entire javadoc set of  files, removing menus
+# etc, making it easy to convert to pdf format and eventually converting
+# to a pdf format. Note: the script needs to be run from the top-most
+# dir of the project structure (just above src).
+#
+# Usage: ./doc.sh
+#
+# required arguments: None
+##
 
 # Create javadoc in html format
 ant javadoc
 cd javadoc/
 
-# Create the array of javadoc files to be included
-array='
-backEnd/managers/AbstractManager.html
-backEnd/managers/ScenarioManager.html
-backEnd/managers/SectionManager.html
-backEnd/managers/SectionScenarioManager.html
-backEnd/managers/SectionTemplateManager.html
-backEnd/managers/SectionTypeManager.html
-backEnd/managers/TemplateManager.html
-backEnd/managers/TranslationManager.html
-backEnd/managers/WordManager.html
-backEnd/filter/CharsetFilter.html
-backEnd/model/Scenario.html
-backEnd/model/Section.html
-backEnd/model/SectionScenario.html
-backEnd/model/SectionTemplate.html
-backEnd/model/SectionType.html
-backEnd/model/Template.html
-backEnd/model/Translation.html
-backEnd/model/Word.html
-backEnd/util/HibernateUtil.html'
+# Create the array of javadoc files to be included, in the form of
+# backEnd/model/Scenario.html
+# backEnd/managers/SectionManager.html
+
+array= "$(%find -name '*.html')"
 
 # Tide-up every javadoc file -- remote menues etc
 for i in $array; do 

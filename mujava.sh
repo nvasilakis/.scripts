@@ -1,6 +1,19 @@
 #!/bin/bash
-# A script that automates the generation and killing 
-# process of mutants for the purposes of testing 
+
+##
+# 2011, Nikos Vasilakis
+# n.c.vasilakis@gmail.com
+#
+# A script that automates the  generation and killing process of mutants
+# for the  purposes of  java testing.  it uses  the mujava  package from
+# http://cs.gmu.edu/~offutt/mujava/
+#
+# Usage: mujava.sh <classname>
+#
+# required arguments: 
+# <class>   The  class  name, for  instance,  for  Something.java it  is
+#           Something
+##
 
 if [ $# -eq 0 ]; then
   echo -e "\n Please supply the class name e.g.,

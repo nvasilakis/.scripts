@@ -1,5 +1,23 @@
 #!/bin/bash
 
+##
+# 2012, Nikos Vasilakis
+# n.c.vasilakis@gmail.com
+#
+# A  script that  aids  rapid  git repository  creation  on the  server.
+# (bare  repositories). The  authentication  is handled  by apache,  and
+# communication by  HTTP. It also  prompts for user-names  and passwords
+# The script also pushes to the system notification daemon when done.
+#
+# Usage: repo-git.sh <name>
+#
+# required arguments: 
+# <name>    the project name  (it also the project id as  it needs to be
+#           unique). It is used in folders and urls.
+#           
+# TODO:  *  Maybe add a project deletion option  
+##
+
 # A simple script to create git repos
 if [[ $1 == "" ]]; then
   echo " You have to provide the name of the repository"

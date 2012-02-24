@@ -1,13 +1,23 @@
 #!/bin/sh
+
+##
+# 2011, Nikos Vasilakis
+# n.c.vasilakis@gmail.com
 #
-# Shell script that configures gnome-terminal to use solarized theme
-# colors. Written for Ubuntu 11.10, untested on anything else.
+# Shell  script that  configures gnome-terminal  to use  solarized theme
+# colors.
+
+# # Usage: solarize.sh <theme>
 #
-# Solarized theme: http://ethanschoonover.com/solarized
-# 
-# Adapted from these sources:
-# https://gist.github.com/1280177
-# http://xorcode.com/guides/solarized-vim-eclipse-ubuntu/
+# required arguments: 
+# <theme>   the given  theme to  choose from.  The palette  includes (1)
+#           light,  based upon  solarized light  theme, (2)  dark, based
+#           upon solarized dark  theme and (3) nv,  a modified solarized
+#           dark theme.
+# Sources:
+#           Solarized theme: http://ethanschoonover.com/solarized
+#           Other scripts: https://gist.github.com/1280177
+##
 
 case "$1" in 
 	"dark")

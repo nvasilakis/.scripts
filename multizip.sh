@@ -1,21 +1,15 @@
 #!/bin/bash - 
-#===============================================================================
+ 
+##
+# 2011, Nikos Vasilakis
+# n.c.vasilakis@gmail.com
 #
-#          FILE:  multizip.sh
+# The multizip archives (zip) all folders within a directory
+#
+# Usage: multizip.sh
 # 
-#         USAGE:  ./multizip.sh 
-# 
-#   DESCRIPTION:  The multizip archives (zip) all folders within a directory
-# 
-#       OPTIONS:  ---
-#  REQUIREMENTS:  ---
-#          BUGS:  ---
-#         NOTES:  ---
-#        AUTHOR:  nvasilakis 
-#       COMPANY: 
-#       CREATED:  03/21/2011 03:43:13 PM EET
-#      REVISION:  ---
-#===============================================================================
+# Required arguments: None
+##
 
 set -o nounset                              # Treat unset variables as an error
 

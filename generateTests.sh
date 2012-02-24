@@ -7,24 +7,24 @@
 # A tiny  automation script that generates  tests for a given  input and
 # outputs results on file and stdout.  The script make uses of KLEE, for
 # brute force test generation in order  to cover all possible paths, and
-# BLAST for testing whether cetrain paths are indeed reachable or not --
+# BLAST for testing whether certain paths are indeed reachable or not --
 # that is, there  exists input that can lead the  program to that state.
 # The script also pushes to the system notification daemon when done.
 #
 # Usage: generateTests [-a|-c] <file.c>
 #
-# required arguments: 
+# Required arguments: 
 # <file.c>  the source  file treating  variables as  independent. Please
 #           make  sure  there  is  a  twin  <file>_dependent.c  treating
 #           variables as dependent
 #           
-# optional arguments:
+# Optional arguments:
 # -a        Add KLEE, BLAST and cvc theorem prover to path
 # -r        Remove KLEE, BLAST and cvc theorem prover from path
 #
 # TODO:  *  in order  to rename results  incrementally as KLEE  does, we
 #           need to get last KLEE build number. [regex]
-#        *  create _dependent.c automagically
+#        *  create _dependent.c automatically
 #        *  implement better profiling
 #        *  -max-forks=1000 for KLEE
 ##
@@ -32,12 +32,12 @@
 ##
 # Function  configure_path configures  the $PATH  environmental variable
 # for  the  scripts  to  run  (regarding KLEE,  BLAST  and  cvc  theorem
-# proover).
+# prover).
 #
 #  Note: If the "generateTests.sh" script is sourced with -a or -d flags
 # then it only alters the path  (without generating tests) even for when
 # the script exists  (This is particularly if someone  wants to generate
-# selected tests withou the use of this script
+# selected tests without the use of this script
 #
 # input: "add" | "remove" depending on the the path modification
 ##

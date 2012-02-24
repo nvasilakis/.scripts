@@ -1,8 +1,24 @@
 #!/bin/bash
 # TODO: use pdfinfo to grab number of pages
 
+##
+# 2011, Nikos Vasilakis
+# n.c.vasilakis@gmail.com
+#
+# A tiny script to distribute print pages among many printers or
+# sessions. 
+#
+# Usage: print.sh <file>
+#
+# required arguments: 
+# <file>    the source  file containing files to be printed.
+#           
+# TODO:  *  It needs an lot of work -- plus use 'pdfinfo' to grab the
+#           number of pages.
+##
+
 remaining=10
-cat print.txt | while read -r line; do
+cat $1 | while read -r line; do
   pages=$line && read -r line;
   file=$line;
   if [ $remaining -eq 0 ]; then

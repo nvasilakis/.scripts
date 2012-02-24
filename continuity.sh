@@ -1,17 +1,30 @@
 #!/bin/bash
-# Script for creating an SVN Server Repository
-# and a Trac Environment at <HOME>/server/
+
+##
+# 2009, Nikos Vasilakis
+# n.c.vasilakis@gmail.com
 #
-# It assumes that the folder ~/server exists.
+# An  old script  for  creating  an SVN  Server  Repository  and a  Trac
+# Environment  at <HOME>/server/  It  assumes that  the folder  ~/server
+# exists. It also assumes that svn and trac are already installed.
 #
-# Author: Nikos Vasilakis
-# Email: n.c.vasilakis@gmail.com
-# Last Update 24|0|10
-# TO DO
-# * change the script to write on /usr/local/
-# * change writting on /etc/apache2/httpd.conf ~/server/ ==> /home/[username]/server
-# * output "Give password for user"
-# * Output info on how to insert admin panel on Trac and some must-have plugins
+# Usage: continuity.sh <project-identifier>
+#
+# required arguments: 
+# <file.c>  the project_id is the name of  the project, but it has to be
+#           unique  among  svn/trac projects  as  it  is also  used  for
+#           folders, urls etc.
+#           
+# optional arguments:
+# -a        Add KLEE, BLAST and cvc theorem prover to path
+# -r        Remove KLEE, BLAST and cvc theorem prover from path
+#
+# TODO:   * change the script to write on /usr/local/
+#         * change writting  on  /etc/apache2/httpd.conf ~/server/  ==>
+#           /home/[username]/server
+#         * output "Give password for user"
+#         * Output  info on how to  insert admin panel on  Trac and some
+##         must-have plugins
 
 echo "Assuming User Name = edutubeplus"
 echo "SVN Directory: [/home/edutubeplus]/server/svn"

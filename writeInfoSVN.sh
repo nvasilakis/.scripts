@@ -1,14 +1,22 @@
-##############################################
+#!/bin/bash
+
+##
+# 2010, Nikos Vasilakis
+# n.c.vasilakis@gmail.com
 #
-# Supporting Script for Hudson Build Files.
+# A tiny reporting automation script. It generates a web page presenting
+# the build  results, revision  numbers and latest  stats, in  order for
+# external teams  to cooperate based  on latest revision  statistics. It
+# needs two  "raw" files to  theme the output: i1  and i2. These  can be
+# thought as the html header and footer.
 #
-# It generates a web page presenting the 
-# build results, revision numbers and latest
-# stats, in order for external teams to coop
+# It  is  an  automation  script  for  use  with  continues  integration
+# environments like Hudson/Jenkins.
 #
-# Author:  basilakn@cti.gr
-# Version: 0.2
-##############################################
+# Usage: ./writeInfoSVN.sh
+#
+# TODO:  *  Output also xml and better formatted html.
+##
 
 # Set env variable
 export JAVA_HOME="/usr/lib/jvm/jdk1.6.0_21"
