@@ -1,6 +1,8 @@
 #!/bin/sh
-#
-# 2009.10.13 Brian Elliott Finley
+
+##
+# 2009 Brian Elliott Finley
+# 2012 Nikos Vasilakis
 # License: GPL v2
 #
 # This program uses disper to switch between the built-in and an
@@ -12,7 +14,7 @@
 # sudo add-apt-repository ppa:disper-dev/ppa
 # sudo apt-get update && sudo apt-get upgrade
 # sudo apt-get install disper
-#
+##
 
 NOTEBOOK_DISPLAY="DFP-0"
 
@@ -24,4 +26,10 @@ if [ $? = 0 ]; then
 else
     # enable the primary (notebook) display
     disper --single
+fi
+
+# Rerun the desktop background fluxbox thing after some sleep
+if [[ $DESKTOP_SESSION==fluxbox ]]; then
+  sleep 5;
+  fbsetbg /media/w7/Users/nikos/Dbox/Dropbox/Photos/Wallpapers/1.jpg
 fi
