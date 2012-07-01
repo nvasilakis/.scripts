@@ -4,9 +4,12 @@
 # 2012, Nikos Vasilakis
 # n.c.vasilakis@gmail.com
 #
-# A script that helps me sleep by shutting down media player
+# A script that helps me sleep by shutting down media player smoothly
 #
-# Usage: ./insomnia.sh
+# Usage: ./insomnia.sh <time>
+#       
+#       * <time>  the time in seconds from when it 
+#                 starts shutting down the player
 ##
 
 # Output current settings
