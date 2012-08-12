@@ -32,9 +32,11 @@ else
     echo "$1 was not found"
     exit 1;
   fi
-  echo ${0/\/rapid.sh//}
+  echo ${0/\/rapid.sh//} # Now try to locate the cookies file
   if [[ -a ${0/\/rapid.sh//}.cookies/rapidshare ]]; then
     cookie=${0/\/rapid.sh//}.cookies/rapidshare
+  elif [[ -a ~/cook/.cookies/rapidshare ]]; then
+    cookie=~/cook/.cookies/rapidshare
   else
     echo "The rapidshare cookie file was not found"
     exit 2;
