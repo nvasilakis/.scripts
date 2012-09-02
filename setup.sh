@@ -39,7 +39,7 @@ else
 fi
 
 # run sudo xrdb ~/.Xdefaults to complete installation for fluxbox
-FILES=".vimrc .bashrc .zshrc .irbrc .screenrc .ss .conkyrc .pythonrc .gitconfig .Xdefaults"
+FILES=".vimrc .bashrc .zshrc .irbrc .screenrc .ss .conkyrc .pythonrc .gitconfig .Xdefaults .emacs"
 for i in $FILES; do 
         e "installing: ~/.vim/$i ~/$i"
         rm -rf ~/$i
