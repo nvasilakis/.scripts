@@ -25,12 +25,14 @@ read method;
 if [[ $method == 2 ]]; then
   git clone git@github.com:nvasilakis/immateriia.git ~/.vim
   git clone git@github.com:nvasilakis/scripts.git ~/scripts
+  git clone git@github.com:nvasilakis/.emacs.d.git ~/.emacs.d
   cd ~/.vim
   e 'updating submodules'
   git submodule update --init
 else
   git clone https://github.com/nvasilakis/immateriia.git ~/.vim
   git clone https://github.com/nvasilakis/scripts.git ~/scripts
+  git clone https://github.com/nvasilakis/.emacs.d.git ~/.emacs.d
   cd ~/.vim
   e 'updating submodules'
   git submodule update --init
