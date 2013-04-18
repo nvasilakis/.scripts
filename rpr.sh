@@ -9,7 +9,13 @@
 # Usage: ./rpr.sh <file>
 ##
 
-f="$1"
+#invoke it from everywhere
+if [[ "${1:0:1}" == "/" ]]; then
+  f="${1}"
+else
+  f="$(pwd)/${1}"
+fi
+
 echo "Sending $f for printing on SEAS"
 fn=$(basename "$f")
 en="${fn##*.}"
