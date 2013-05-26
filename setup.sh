@@ -5,7 +5,7 @@
 # n.c.vasilakis@gmail.com
 #
 # Script that installs all required git repositories on the local
-# machine, registers submodules and setups .*rc files as soft links.;w
+# machine, registers submodules and setups .*rc files as soft links.
 #
 # Usage: ./setup.sh
 #
@@ -39,11 +39,11 @@ else
 fi
 
 # run sudo xrdb ~/.Xdefaults to complete installation for fluxbox
-FILES=".vimrc .bashrc .zshrc .irbrc .screenrc .ss .conkyrc .pythonrc .gitconfig .Xdefaults .emacs"
+FILES="$(echo .*rc) .ss .gitconfig .Xdefaults .emacs"
 for i in $FILES; do 
-        e "installing: ~/.vim/$i ~/$i"
+        e "installing: ~/.dotrc/$i ~/$i"
         rm -rf ~/$i
-        ln -s ~/.vim/$i ~/$i
+        ln -s ~/.dotrc/$i ~/$i
 done
 
 e "heading to $current_dir"; cd $current_dir
