@@ -26,6 +26,7 @@ if [[ $method == 2 ]]; then
   git clone git@github.com:nvasilakis/immateriia.git ~/.vim
   git clone git@github.com:nvasilakis/scripts.git ~/scripts
   git clone git@github.com:nvasilakis/.emacs.d.git ~/.emacs.d
+  git clone git@github.com:nvasilakis/dotrc.git ~/.dotrc
   cd ~/.vim
   e 'updating submodules'
   git submodule update --init
@@ -33,11 +34,13 @@ else
   git clone https://github.com/nvasilakis/immateriia.git ~/.vim
   git clone https://github.com/nvasilakis/scripts.git ~/scripts
   git clone https://github.com/nvasilakis/.emacs.d.git ~/.emacs.d
+  git clone https://github.com/nvasilakis/dotrc.git ~/.dotrc
   cd ~/.vim
   e 'updating submodules'
   git submodule update --init
 fi
 
+cd ~/.dotrc
 # run sudo xrdb ~/.Xdefaults to complete installation for fluxbox
 FILES="$(echo .*rc) .ss .gitconfig .Xdefaults .emacs"
 for i in $FILES; do 
