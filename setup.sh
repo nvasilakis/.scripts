@@ -11,6 +11,8 @@
 #
 # TODO:  
 #       *  Maybe install extra packages
+#       *  in case of ssh, grab setup keys, generate keys, wait for
+#       github and then continue
 ##
 
 # Function used for debugging output.
