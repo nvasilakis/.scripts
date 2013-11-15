@@ -15,6 +15,7 @@
 #       github and then continue
 ##
 
+clear
 # Function used for debugging output.
 function e {
   echo $2 ".. $1";
@@ -24,9 +25,9 @@ function install {
 }
 
 current_dir=$(pwd)
-command -v git >/dev/null 2>&1 || {install git;}
-command -v zsh >/dev/null 2>&1 || {install zsh;}
-command -v screen >/dev/null 2>&1 || {install screen;}
+command -v git >/dev/null 2>&1 || { install git; }
+command -v zsh >/dev/null 2>&1 || { install zsh; }
+command -v screen >/dev/null 2>&1 || { install screen; }
 
 e "Clone via https(1) or ssh(2)? [1]> " -n
 read method;
