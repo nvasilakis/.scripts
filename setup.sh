@@ -17,12 +17,22 @@
 function e {
   echo $2 ".. $1";
 }
+alias ai='sudo apt-get install'
 
 current_dir=$(pwd)
+command -v git >/dev/null 2>&1 || {ai git || {e 'Install git'}}
+command -v zsh >/dev/null 2>&1 || {ai zsh || {e 'Install git'}}
+command -v screen >/dev/null 2>&1 || {ai screen || {e 'Install git'}}
 
 e "Clone via https(1) or ssh(2)? [1]> " -n
 read method;
 if [[ $method == 2 ]]; then
+  wget https://raw.github.com/nvasilakis/scripts/master/setup-keys.sh 
+  chmod +x setup-keys.sh
+  ./setup-keys.sh
+  # cleanup
+  rm setup-keys.sh
+
   git clone git@github.com:nvasilakis/immateriia.git ~/.vim
   git clone git@github.com:nvasilakis/scripts.git ~/scripts
   git clone git@github.com:nvasilakis/.emacs.d.git ~/.emacs.d
@@ -50,3 +60,5 @@ for i in $FILES; do
 done
 
 e "heading to $current_dir"; cd $current_dir
+e "Clean up ${0}"; rm  ${0}
+
