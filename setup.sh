@@ -20,14 +20,19 @@ clear
 function e {
   echo $2 ".. $1";
 }
-function install {
+function after_check {
   sudo apt-get install "$1" || e "Install $1";
 }
 
+function install {
+  for prog; do
+    #echo "Install ${prog}"
+    command -v "${prog}" >/dev/null 2>&1 || { install "${prog}"; }
+  done
+}
+
 current_dir=$(pwd)
-command -v git >/dev/null 2>&1 || { install git; }
-command -v zsh >/dev/null 2>&1 || { install zsh; }
-command -v screen >/dev/null 2>&1 || { install screen; }
+install zsh screen git htop
 
 e "Clone via https(1) or ssh(2)? [1]> " -n
 read method;
