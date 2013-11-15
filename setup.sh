@@ -19,17 +19,19 @@
 function e {
   echo $2 ".. $1";
 }
-alias ai='sudo apt-get install'
+function install {
+  sudo apt-get install "$1" || e "Install $1";
+}
 
 current_dir=$(pwd)
-command -v git >/dev/null 2>&1 || {ai git || {e 'Install git'}}
-command -v zsh >/dev/null 2>&1 || {ai zsh || {e 'Install git'}}
-command -v screen >/dev/null 2>&1 || {ai screen || {e 'Install git'}}
+command -v git >/dev/null 2>&1 || {install git;}
+command -v zsh >/dev/null 2>&1 || {install zsh;}
+command -v screen >/dev/null 2>&1 || {install screen;}
 
 e "Clone via https(1) or ssh(2)? [1]> " -n
 read method;
 if [[ $method == 2 ]]; then
-  wget https://raw.github.com/nvasilakis/scripts/master/setup-keys.sh 
+  wget https://raw.github.com/nvasilakis/scripts/master/setup-keys.sh
   chmod +x setup-keys.sh
   ./setup-keys.sh
   # cleanup
@@ -55,7 +57,7 @@ fi
 cd ~/.dotrc
 # run sudo xrdb ~/.Xdefaults to complete installation for fluxbox
 FILES="$(echo .*rc) .ss .gitconfig .Xdefaults .emacs"
-for i in $FILES; do 
+for i in $FILES; do
         e "installing: ~/.dotrc/$i ~/$i"
         rm -rf ~/$i
         ln -s ~/.dotrc/$i ~/$i
