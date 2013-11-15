@@ -20,14 +20,14 @@ clear
 function e {
   echo $2 ".. $1";
 }
-function after_check {
+function icheck {
   sudo apt-get install "$1" || e "Install $1";
 }
 
 function install {
   for prog; do
     #echo "Install ${prog}"
-    command -v "${prog}" >/dev/null 2>&1 || { install "${prog}"; }
+    command -v "${prog}" >/dev/null 2>&1 || { icheck "${prog}"; }
   done
 }
 
