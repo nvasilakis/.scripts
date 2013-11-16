@@ -72,3 +72,4 @@ done
 e "heading to $current_dir"; cd $current_dir
 e "Clean up ${0}"; rm  ${0}
 
+screen
