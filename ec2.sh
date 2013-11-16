@@ -17,7 +17,8 @@ function makeFilesystem {
     if [ $(echo "${diskfree}" | grep -c "${partition}") -eq 1 ]; then
       echo "${partition} is mounted";
     else
-      read -p "Format ${partition} to ext3 [y/N]?" toFormat
+      echo -n "Format ${partition} to ext3 [y/N]?" 
+      read toFormat
       case "${toFormat}" in
         y)
           sudo mke2fs -F -j /dev/${partition} \
@@ -36,5 +37,4 @@ function makeFilesystem {
   df -h
 }
 
-
-
+makeFilesystem
