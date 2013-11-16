@@ -13,26 +13,27 @@
 function makeFilesystem {
   partitions="$(grep -v name /proc/partitions | grep -v '^$' | awk '{print $4}')"
   diskfree="$(df)"
-  for partition in "${partitions}"; do 
-    if [ $(echo "${diskfree}" | grep -c "${partition}") -eq 1 ];
+  for partition in ${partitions}; do 
+    if [ $(echo "${diskfree}" | grep -c "${partition}") -eq 1 ]; then
       echo "${partition} is mounted";
     else
-      read -p "Format ${partition} to ext3 [y/N]" toFORMAT
+      read -p "Format ${partition} to ext3 [y/N]?" toFormat
       case "${toFormat}" in
         y)
-          mke2fs -F -j ${partition} \
+          sudo mke2fs -F -j /dev/${partition} \
             && sudo mkdir /mnt/${partition} \
             && sudo mount /dev/${partition} /mnt/${partition} \
-            && sudo chown -R $(whoami):$(whoami) /mnt/${partition}
+            && sudo chown -R $(whoami):$(whoami) /mnt/${partition} \
+            && echo "Filesystem ${partition} mounted under /mnt" \
+            || { echo "There was a problem mounting ${partition}"; }
           ;;
         *)
           echo "Exiting"
-          exit 1;
           ;;
       esac
     fi
-
   done
+  df -h
 }
 
 
