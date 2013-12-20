@@ -32,7 +32,8 @@ function install {
 }
 
 current_dir=$(pwd)
-install zsh screen git htop
+# last two are for compiling gnu screen on debial-like systems
+install zsh screen git htop autoconf libncurses5-dev
 
 e "Clone via https(1) or ssh(2)? [1]> " -n
 read method;
@@ -72,4 +73,18 @@ done
 e "heading to $current_dir"; cd $current_dir
 e "Clean up ${0}"; rm  ${0}
 
-screen
+e "Fetching screen"
+git clone git://git.savannah.gnu.org/screen.git
+cd screen/src
+./autogen.sh
+./configure --enable-colors256
+make
+if [[ -f screen ]]; then
+  sudo mv screen $(dirname $(which screen))
+  e "Clean up screen"
+  cd ~
+  rm -rf screen/
+  screen
+else
+  e 'Problem installing screen?'
+fi
