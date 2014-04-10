@@ -10,10 +10,10 @@
 # Usage: ./post-setup.sh
 ##
 
-VIM="~/.vim"
-SCRIPTS="~/scripts"
-EMACS="~/.emacs.d"
-SHELL="~/.dotrc"
+VIM="~/.vim/"
+SCRIPTS="~/scripts/"
+EMACS="~/.emacs.d/"
+SHELL="~/.dotrc/"
 # run sudo xrdb ~/.Xdefaults to complete installation for fluxbox
 FILES=".bashrc .conkyrc .hgrc .irbrc .vimrc .zshrc .pythonrc .emacs";
 FILES="${FILES} .screenrc .pentadactylrc  .gitconfig .Xdefaults .ss";
@@ -27,7 +27,7 @@ function clean {
  rm -rf "${SHELL}"
  for f in $FILES; do
    # Check if file exists
-   rm $f
+   rm "~/${f}"
  done
 }
 
@@ -50,6 +50,9 @@ current_dir=$(pwd)
 # last two are for compiling gnu screen on debial-like systems
 install zsh screen git htop autoconf libncurses5-dev
 
+clean
+
+exit;
 e "Clone via https(1) or ssh(2)? [1]> " -n
 read method;
 if [[ $method == 2 ]]; then
@@ -97,9 +100,8 @@ if [[ -f screen ]]; then
   e "Clean up screen"
   cd ~
   rm -rf screen/
-  screen
+  #screen
+  e "Type screen to launch it!"
 else
   e 'Problem installing screen?'
 fi
-
-return 0
