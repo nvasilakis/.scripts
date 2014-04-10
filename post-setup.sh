@@ -10,10 +10,10 @@
 # Usage: ./post-setup.sh
 ##
 
-VIM="~/.vim/"
-SCRIPTS="~/scripts/"
-EMACS="~/.emacs.d/"
-SHELL="~/.dotrc/"
+VIM=~/.vim/
+SCRIPTS=~/scripts/
+EMACS=~/.emacs.d/
+SHELL=~/.dotrc/
 # run sudo xrdb ~/.Xdefaults to complete installation for fluxbox
 FILES=".bashrc .conkyrc .hgrc .irbrc .vimrc .zshrc .pythonrc .emacs";
 FILES="${FILES} .screenrc .pentadactylrc  .gitconfig .Xdefaults .ss";
@@ -21,10 +21,10 @@ FILES="${FILES} .screenrc .pentadactylrc  .gitconfig .Xdefaults .ss";
 clear
 # Function used for debugging output.
 function clean {
- rm -rf "${VIM}}"
- rm -rf "${SCRIPTS}"
- rm -rf "${EMACS}"
- rm -rf "${SHELL}"
+ rm -rf ${VIM}
+ rm -rf ${SCRIPTS}
+ rm -rf ${EMACS}
+ rm -rf ${SHELL}
  for f in $FILES; do
    # Check if file exists
    rm "~/${f}"
@@ -52,7 +52,6 @@ install zsh screen git htop autoconf libncurses5-dev
 
 clean
 
-exit;
 e "Clone via https(1) or ssh(2)? [1]> " -n
 read method;
 if [[ $method == 2 ]]; then
@@ -62,18 +61,18 @@ if [[ $method == 2 ]]; then
   # cleanup
   rm setup-keys.sh
 
-  git clone git@github.com:nvasilakis/immateriia.git "${VIM}}"
-  git clone git@github.com:nvasilakis/scripts.git    "${SCRIPTS}"
-  git clone git@github.com:nvasilakis/.emacs.d.git   "${EMACS}"
-  git clone git@github.com:nvasilakis/dotrc.git      "${SHELL}"
+  git clone git@github.com:nvasilakis/immateriia.git ${VIM}
+  git clone git@github.com:nvasilakis/scripts.git    ${SCRIPTS}
+  git clone git@github.com:nvasilakis/.emacs.d.git   ${EMACS}
+  git clone git@github.com:nvasilakis/dotrc.git      ${SHELL}
   cd ~/.vim
   e 'updating submodules'
   git submodule update --init
 else
-  git clone https://github.com/nvasilakis/immateriia.git "${VIM}}"
-  git clone https://github.com/nvasilakis/scripts.git    "${SCRIPTS}"
-  git clone https://github.com/nvasilakis/.emacs.d.git   "${EMACS}"
-  git clone https://github.com/nvasilakis/dotrc.git      "${SHELL}"
+  git clone https://github.com/nvasilakis/immateriia.git ${VIM}
+  git clone https://github.com/nvasilakis/scripts.git    ${SCRIPTS}
+  git clone https://github.com/nvasilakis/.emacs.d.git   ${EMACS}
+  git clone https://github.com/nvasilakis/dotrc.git      ${SHELL}
   cd ~/.vim
   e 'updating submodules'
   git submodule update --init
