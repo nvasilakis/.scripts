@@ -10,11 +10,31 @@
 # Usage: ./post-setup.sh
 ##
 
+VIM="~/.vim"
+SCRIPTS="~/scripts"
+EMACS="~/.emacs.d"
+SHELL="~/.dotrc"
+# run sudo xrdb ~/.Xdefaults to complete installation for fluxbox
+FILES=".bashrc .conkyrc .hgrc .irbrc .vimrc .zshrc .pythonrc .emacs";
+FILES="${FILES} .screenrc .pentadactylrc  .gitconfig .Xdefaults .ss";
+
 clear
 # Function used for debugging output.
+function clean {
+ rm -rf "${VIM}}"
+ rm -rf "${SCRIPTS}"
+ rm -rf "${EMACS}"
+ rm -rf "${SHELL}"
+ for f in $FILES; do
+   # Check if file exists
+   rm $f
+ done
+}
+
 function e {
   echo $2 ".. $1";
 }
+
 function icheck {
   sudo apt-get install "$1" || e "Install $1";
 }
@@ -39,26 +59,25 @@ if [[ $method == 2 ]]; then
   # cleanup
   rm setup-keys.sh
 
-  git clone git@github.com:nvasilakis/immateriia.git ~/.vim
-  git clone git@github.com:nvasilakis/scripts.git ~/scripts
-  git clone git@github.com:nvasilakis/.emacs.d.git ~/.emacs.d
-  git clone git@github.com:nvasilakis/dotrc.git ~/.dotrc
+  git clone git@github.com:nvasilakis/immateriia.git "${VIM}}"
+  git clone git@github.com:nvasilakis/scripts.git    "${SCRIPTS}"
+  git clone git@github.com:nvasilakis/.emacs.d.git   "${EMACS}"
+  git clone git@github.com:nvasilakis/dotrc.git      "${SHELL}"
   cd ~/.vim
   e 'updating submodules'
   git submodule update --init
 else
-  git clone https://github.com/nvasilakis/immateriia.git ~/.vim
-  git clone https://github.com/nvasilakis/scripts.git ~/scripts
-  git clone https://github.com/nvasilakis/.emacs.d.git ~/.emacs.d
-  git clone https://github.com/nvasilakis/dotrc.git ~/.dotrc
+  git clone https://github.com/nvasilakis/immateriia.git "${VIM}}"
+  git clone https://github.com/nvasilakis/scripts.git    "${SCRIPTS}"
+  git clone https://github.com/nvasilakis/.emacs.d.git   "${EMACS}"
+  git clone https://github.com/nvasilakis/dotrc.git      "${SHELL}"
   cd ~/.vim
   e 'updating submodules'
   git submodule update --init
 fi
 
 cd ~/.dotrc
-# run sudo xrdb ~/.Xdefaults to complete installation for fluxbox
-FILES="$(echo .*rc) .ss .gitconfig .Xdefaults .emacs"
+
 for i in $FILES; do
         e "installing: ~/.dotrc/$i ~/$i"
         rm -rf ~/$i
@@ -66,7 +85,6 @@ for i in $FILES; do
 done
 
 e "heading to $current_dir"; cd $current_dir
-e "Clean up ${0}"; rm  ${0}
 
 e "Fetching screen"
 git clone git://git.savannah.gnu.org/screen.git
