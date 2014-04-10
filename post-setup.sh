@@ -7,12 +7,7 @@
 # Script that installs all required git repositories on the local
 # machine, registers submodules and setups .*rc files as soft links.
 #
-# Usage: ./setup.sh
-#
-# TODO:  
-#       *  Maybe install extra packages
-#       *  in case of ssh, grab setup keys, generate keys, wait for
-#       github and then continue
+# Usage: ./post-setup.sh
 ##
 
 clear
@@ -88,3 +83,5 @@ if [[ -f screen ]]; then
 else
   e 'Problem installing screen?'
 fi
+
+return 0

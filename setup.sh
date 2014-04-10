@@ -1,16 +1,22 @@
 #!/bin/sh
 
 SETUP_LOC="https://raw.github.com/nvasilakis/scripts/master/post-setup.sh"
+FNAME="setup.sh"
+THIS="$0"
 
-isInstalled() {
+function isInstalled {
   [ -x "$(which $1)" ]
 }
 
+function cleanup {
+  echo "cleaning up $FNAME $THIS"
+  rm "$FNAME" "$THIS"
+}
+
 if isInstalled apt-get ; then 
-  echo "apt-get"
+  echo "Running apt-get.."
   export PKG_MGR=1;
   sudo apt-get install curl
-
 elif isInstalled yum ; then 
   echo "yum"
   export PKG_MGR=2;
@@ -28,4 +34,7 @@ else
   exit 2
 fi
 
-curl $SETUP_LOC | bash
+#curl $SETUP_LOC | bash
+wget $SETUP_LOC -O "${FNAME}" 
+chmod +x "${FNAME}"
+./"${FNAME}" && cleanup
