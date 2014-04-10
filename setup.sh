@@ -4,11 +4,12 @@ SETUP_LOC="https://raw.github.com/nvasilakis/scripts/master/post-setup.sh"
 FNAME="setup.sh"
 THIS="$0"
 
-function isInstalled {
+#sh-compatible function definitions
+isInstalled() {
   [ -x "$(which $1)" ]
 }
 
-function cleanup {
+cleanup() {
   echo "cleaning up $FNAME $THIS"
   rm "$FNAME" "$THIS"
 }
