@@ -1,5 +1,3 @@
-# TODO add more scripts 
-
 ==Scripts==
 
 This is a bash (mainly) scripts library -- a scriptorium!
@@ -32,3 +30,9 @@ The python scripts currently added:
 
   * skype-dbus-service.py :  pushes skype messages to libnotify
   * skype-notify.py :        hendle the rest of the messages
+
+Minor note: using functions from "sourced" bash files while on zsh
+(although zsh is *fully* backwards-compatible with bash) can lead to
+unexpected results; this is because, contrary to intuition, they are
+not parsed by the sha-bang header, but the current shell (equivalent
+of trying to source a python file on ksh).

@@ -1,52 +1,42 @@
-#!/bin/bash
+#!/bin/sh
 
-##
-# 2012, Nikos Vasilakis
-# n.c.vasilakis@gmail.com
-#
-# Script that installs all required git repositories on the local
-# machine, registers submodules and setups .*rc files as soft links.
-#
-# Usage: ./setup.sh
-#
-# TODO:  
-#       *  Maybe install extra packages
-##
+SETUP_LOC="https://raw.github.com/nvasilakis/scripts/master/post-setup.sh"
+FNAME="setup.sh"
+THIS="$0"
 
-# Function used for debugging output.
-function e {
-  echo $2 ".. $1";
+#sh-compatible function definitions
+isInstalled() {
+  [ -x "$(which $1)" ]
 }
 
-current_dir=$(pwd)
+cleanup() {
+  echo "cleaning up $FNAME $THIS"
+  rm "$FNAME" "$THIS"
+}
 
-e "Clone via https(1) or ssh(2)? [1]> " -n
-read method;
-if [[ $method == 2 ]]; then
-  git clone git@github.com:nvasilakis/immateriia.git ~/.vim
-  git clone git@github.com:nvasilakis/scripts.git ~/scripts
-  git clone git@github.com:nvasilakis/.emacs.d.git ~/.emacs.d
-  git clone git@github.com:nvasilakis/dotrc.git ~/.dotrc
-  cd ~/.vim
-  e 'updating submodules'
-  git submodule update --init
-else
-  git clone https://github.com/nvasilakis/immateriia.git ~/.vim
-  git clone https://github.com/nvasilakis/scripts.git ~/scripts
-  git clone https://github.com/nvasilakis/.emacs.d.git ~/.emacs.d
-  git clone https://github.com/nvasilakis/dotrc.git ~/.dotrc
-  cd ~/.vim
-  e 'updating submodules'
-  git submodule update --init
-fi
+check_pkg() {
+  if isInstalled apt-get ; then 
+    echo "Running apt-get.."
+    export PKG_MGR=1;
+    sudo apt-get install curl
+  elif isInstalled yum ; then 
+    echo "yum"
+    export PKG_MGR=2;
+  elif isInstalled pacman ; then 
+    echo "pacman"
+    export PKG_MGR=3;
+  elif isInstalled emerge ; then 
+    echo "emerge"
+    export PKG_MGR=4;
+  elif isInstalled zypp ; then 
+    echo "zypp"
+    export PKG_MGR=5;
+  else
+    echo 'No package manager found!'
+    exit 2
+  fi
+}
 
-cd ~/.dotrc
-# run sudo xrdb ~/.Xdefaults to complete installation for fluxbox
-FILES="$(echo .*rc) .ss .gitconfig .Xdefaults .emacs"
-for i in $FILES; do 
-        e "installing: ~/.dotrc/$i ~/$i"
-        rm -rf ~/$i
-        ln -s ~/.dotrc/$i ~/$i
-done
-
-e "heading to $current_dir"; cd $current_dir
+wget $SETUP_LOC -O "${FNAME}" 
+chmod +x "${FNAME}"
+./"${FNAME}" && cleanup
