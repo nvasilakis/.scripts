@@ -10,7 +10,7 @@ CABAL_VERSION=1.18.0.2
 
 GHC_INSTALL_DIR=$HOME/ghc
 
-DEFAULT_CABAL_LIBS="happy alex mtl"
+DEFAULT_CABAL_LIBS="happy alex"
 
 ## End user-configurable variables
 
