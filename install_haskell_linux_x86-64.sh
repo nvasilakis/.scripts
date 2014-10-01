@@ -5,8 +5,8 @@
 
 ## User-configurable variables
 
-GHC_VERSION=7.6.3
-CABAL_VERSION=1.18.0.2
+GHC_VERSION=7.8.3
+CABAL_VERSION=1.18.1.3
 
 GHC_INSTALL_DIR=$HOME/ghc
 
