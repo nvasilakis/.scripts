@@ -17,8 +17,8 @@ prompt_end () {
 # should return appropriate result 
 ssh-keygen -t rsa -f ~/.ssh/id_rsa -C `whoami`@`uname -n` &&
   prompt_start &&
-  read null &&
   cat ~/.ssh/id_rsa.pub &&
+  read null &&
   e 'adding pair to ssh agent' &&
   ssh-add ~/.ssh/id_rsa &&
   prompt_end &&
