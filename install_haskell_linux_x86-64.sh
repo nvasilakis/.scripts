@@ -5,8 +5,9 @@
 
 ## User-configurable variables
 
-GHC_VERSION=7.8.3
-CABAL_VERSION=1.18.1.3
+
+GHC_VERSION=7.8.3 # Check releases @ http://www.haskell.org/ghc/dist/
+CABAL_VERSION=1.18.0.4 # Check releases @ http://www.haskell.org/cabal/release/cabal-install-1.18.0.4/
 
 GHC_INSTALL_DIR=$HOME/ghc
 
@@ -42,7 +43,7 @@ finalize_check
 #ghc
 GHC_EXT=tar.bz2
 GHC_NO_EXT=ghc-${GHC_VERSION}
-GHC_WITH_EXT=${GHC_NO_EXT}-x86_64-unknown-linux.${GHC_EXT}
+GHC_WITH_EXT=${GHC_NO_EXT}-x86_64-unknown-linux-deb7.${GHC_EXT}
 GHC_URL=http://www.haskell.org/ghc/dist/${GHC_VERSION}/${GHC_WITH_EXT}
 
 # cabal-install

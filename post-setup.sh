@@ -10,41 +10,7 @@
 # Usage: ./post-setup.sh
 ##
 
-VIM=~/.vim/
-SCRIPTS=~/scripts/
-EMACS=~/.emacs.d/
-SHELL=~/.dotrc/
-# run sudo xrdb ~/.Xdefaults to complete installation for fluxbox
-FILES=".bashrc .conkyrc .hgrc .irbrc .vimrc .zshrc .pythonrc .emacs";
-FILES="${FILES} .screenrc .pentadactylrc  .gitconfig .Xdefaults .ss";
 
-clear
-# Function used for debugging output.
-function clean {
- rm -rf ${VIM}
- rm -rf ${SCRIPTS}
- rm -rf ${EMACS}
- rm -rf ${SHELL}
- for f in $FILES; do
-   # Check if file exists
-   rm "~/${f}"
- done
-}
-
-function e {
-  echo $2 ".. $1";
-}
-
-function icheck {
-  sudo apt-get install "$1" || e "Install $1";
-}
-
-function install {
-  for prog; do
-    #echo "Install ${prog}"
-    command -v "${prog}" >/dev/null 2>&1 || { icheck "${prog}"; }
-  done
-}
 
 current_dir=$(pwd)
 # last two are for compiling gnu screen on debial-like systems
