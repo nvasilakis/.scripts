@@ -91,6 +91,34 @@ linkEm () {
   done
 }
 
+getConfig () {
+  echo "Trying to generate and setup keys"
+  wget https://raw.github.com/nvasilakis/scripts/master/setup-keys.sh
+  chmod +x setup-keys.sh
+  ./setup-keys.sh
+  if [[ $? == 0 ]]; then # if success
+    git clone git@github.com:nvasilakis/immateriia.git ${VIM}
+    git clone git@github.com:nvasilakis/scripts.git    ${SCRIPTS}
+    git clone git@github.com:nvasilakis/.emacs.d.git   ${EMACS}
+    git clone git@github.com:nvasilakis/dotrc.git      ${SHELL}
+    cd ~/.vim
+    echo 'updating submodules'
+    git submodule update --init
+  else
+    git clone https://github.com/nvasilakis/immateriia.git ${VIM}
+    git clone https://github.com/nvasilakis/scripts.git    ${SCRIPTS}
+    git clone https://github.com/nvasilakis/.emacs.d.git   ${EMACS}
+    git clone https://github.com/nvasilakis/dotrc.git      ${SHELL}
+    cd ~/.vim
+    echo 'updating submodules'
+    git submodule update --init
+  fi
+  # cleanup
+  rm setup-keys.sh
+  cd ~/.dotrc
+  linkEm
+}
+
 main () {
   if [[ `uname` == 'Linux' ]]; then
     if isInstalled apt-get ; then 
@@ -111,7 +139,6 @@ main () {
     fi
   fi
 
-
   # Most probably OSX, and if true, will use curl
   if [[ $PKG_MGR == "" ]]; then
     echo 'Could not find package manager,' 
@@ -128,37 +155,14 @@ main () {
         echo 'You lack package manager, wget and curl -- no luck!  Aborting..'
         exit -1
       fi
+    else
+      getConfig
     fi
   else
     echo 'FIXME: min|mid|max'
     PKGS="$MIN $MID" #FIXME
     sudo $PKG_MGR $PKGS
-
-    echo "Trying to generate and setup keys"
-    wget https://raw.github.com/nvasilakis/scripts/master/setup-keys.sh
-    chmod +x setup-keys.sh # FIXME: See below
-    ./setup-keys.sh # FIXME: Make sure this returns correct result!
-    if [[ $? == 0 ]]; then # if success
-      git clone git@github.com:nvasilakis/immateriia.git ${VIM}
-      git clone git@github.com:nvasilakis/scripts.git    ${SCRIPTS}
-      git clone git@github.com:nvasilakis/.emacs.d.git   ${EMACS}
-      git clone git@github.com:nvasilakis/dotrc.git      ${SHELL}
-      cd ~/.vim
-      echo 'updating submodules'
-      git submodule update --init
-    else
-      git clone https://github.com/nvasilakis/immateriia.git ${VIM}
-      git clone https://github.com/nvasilakis/scripts.git    ${SCRIPTS}
-      git clone https://github.com/nvasilakis/.emacs.d.git   ${EMACS}
-      git clone https://github.com/nvasilakis/dotrc.git      ${SHELL}
-      cd ~/.vim
-      echo 'updating submodules'
-      git submodule update --init
-    fi
-    # cleanup
-    rm setup-keys.sh
-    cd ~/.dotrc
-    linkEm
+    getConfig
   fi
 }
 
