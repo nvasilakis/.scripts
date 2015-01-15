@@ -7,6 +7,7 @@ EMACS=~/.emacs.d/
 SHELL=~/.dotrc/
 FILES=".bashrc .conkyrc .hgrc .irbrc .vimrc .zshrc .pythonrc .emacs";
 FILES="${FILES} .screenrc .pentadactylrc  .gitconfig .Xdefaults .ss";
+FILES="${FILES} .ocamlinit";
 BAK=".rc_backups"
 GIT_EXEC=$(which git > /dev/null && echo '0' || echo '1')
 WGET_EXEC=$(which wget > /dev/null && echo '0' || echo '1')
