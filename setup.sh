@@ -19,37 +19,25 @@ MAX="autoconf libncurses5-dev"
 TRY_UPGRADE="True"
 ABS_MIN="https://github.com/nvasilakis/dotrc/archive/master.zip"
 PKG_MGR=""
-
-if [[ `uname` == 'Linux' ]]; then
-  echo -n "Do you also want to try upgrade?[Y/n]"
-  read pls
-  if [[ $pls == 'n' || $pls == 'N' ]]; then
-    TRY_UPGRADE='False'
-  fi
-fi
+OVER_HTTP="False";
 
 usage () {
   cat <<EOF
-    Setup environment based on nikos.vasilak.is/rc, after backing up
+  Setup environment based on nikos.vasilak.is/rc, after backing up
 
-      ./${0} [--{min,mid,max}] [--help]
+    ./${0} [--{min,mid,max}] [--help]
 
-      will download environment from github
-      * min  will install minimum required packages (git)
-          -- if this is not available, will fall back to http
-      * mid  will include zsh, screen and htop on Linux
-      * max  will compile latest stable gnu screen
-      * help shows this message
+    will download environment from github
+    * min  will install minimum required packages (git)
+        -- if this is not available, will fall back to http
+    * mid  will include zsh, screen and htop on Linux
+    * max  will compile latest stable gnu screen
+    * help shows this message
 EOF
 }
 
 isInstalled () {
   [ -x "$(which $1)" ]
-}
-
-cleanup () {
-  echo "cleaning up $FNAME $THIS"
-  rm "$FNAME" "$THIS"
 }
 
 #cleanup everything
@@ -59,7 +47,7 @@ clean () {
  rm -rf ${EMACS}
  rm -rf ${SHELL}
  for f in $FILES; do
-   touch ~/${f} && rm "~/${f}"
+   touch "~/${f}" && rm "~/${f}"
  done
 }
 
@@ -72,6 +60,53 @@ function backup {
   cp ~/.*rc ~/$BAK/$dt/
   echo "Backup complete"
 }
+
+fetch () {
+  if [[ $WGET_EXEC == '0' ]]; then
+    wget $1
+    linkEm
+  elif [[ $CURL_EXEC == '0' ]]; then
+    curl -LOk $1
+    linkEm
+  else
+    echo 'You have neither curl nor wget, what else can we do than abort?'
+    exit -1
+  fi
+}
+
+# Check which argument we have
+while getopts "ch" opt; do
+  case $opt in
+    c) 
+      clean
+      exit 0;
+      ;;
+    h) 
+      usage;
+      exit 0;
+      ;;
+    :)
+      out "Need extra argument for ${OPTARG}. -h brings up help."
+      exit 1;
+      ;;
+  esac
+done
+
+# TODO: If OS X set up brew, install patched screen
+
+if [[ `uname` == 'Linux' ]]; then
+  echo -n "Do you also want to try upgrade?[Y/n]"
+  read pls < /dev/tty
+  if [[ $pls == 'n' || $pls == 'N' ]]; then
+    TRY_UPGRADE='False'
+  fi
+fi
+
+echo -n "Default is git over ssh -- prefer http?[y/N]"
+read pls < /dev/tty
+if [[ $pls == 'y' || $pls == 'Y' ]]; then
+  OVER_HTTP="True";
+fi
 
 icheck () {
   sudo apt-get install "$1" || echo "Install $1";
@@ -94,10 +129,10 @@ linkEm () {
 
 getConfig () {
   echo "Trying to generate and setup keys"
-  wget https://raw.github.com/nvasilakis/scripts/master/setup-keys.sh
+  fetch https://raw.github.com/nvasilakis/scripts/master/setup-keys.sh
   chmod +x setup-keys.sh
   ./setup-keys.sh
-  if [[ $? == 0 ]]; then # if success
+  if [[ $OVER_HTTP == "False" ]]; then # if success
     git clone git@github.com:nvasilakis/immateriia.git ${VIM}
     git clone git@github.com:nvasilakis/scripts.git    ${SCRIPTS}
     git clone git@github.com:nvasilakis/.emacs.d.git   ${EMACS}
@@ -115,6 +150,7 @@ getConfig () {
     git submodule update --init
   fi
   # cleanup
+  cd ..
   rm setup-keys.sh
   cd ~/.dotrc
   linkEm
@@ -138,6 +174,10 @@ main () {
     elif isInstalled zypp ; then 
       PKG_MGR="zypp"
     fi
+  elif [[ `uname` == 'Darwin' ]]; then
+    if isInstalled apt-get ; then 
+      PKG_MGR="brew";
+    fi
   fi
 
   # Most probably OSX, and if true, will use curl
@@ -146,16 +186,8 @@ main () {
     echo '..proceeding just with configuration fetch (min)'
     if [[ $GIT_EXEC == '1' ]]; then
       echo 'Could not even find git -- proceeding with the absolute minimum!'
-      if [[ $WGET_EXEC == '0' ]]; then
-        wget $ABS_MIN
-        linkEm
-      elif [[ $CURL_EXEC == '0' ]]; then
-        curl -LOk $ABS_MIN
-        linkEm
-      else
-        echo 'You lack package manager, wget and curl -- no luck!  Aborting..'
-        exit -1
-      fi
+      fetch $ABS_MIN;
+      linkEm
     else
       getConfig
     fi
