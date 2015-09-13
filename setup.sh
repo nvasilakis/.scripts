@@ -189,6 +189,7 @@ presetup() {
 }
 
 setup () {
+  presetup
   # Most probably OSX, and if true, will use curl
   if [[ $PKG_MGR == "" ]]; then
     echo 'Could not find package manager,' 
