@@ -183,6 +183,7 @@ presetup() {
     cd screen-for-OSX &&
     ./install.sh &&
     cd .. &&
+    sudo cp /usr/local/bin/screen /usr/bin/screen &&
     rm -rf screen-for-OSX
   fi
 }
