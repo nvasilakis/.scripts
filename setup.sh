@@ -173,6 +173,15 @@ presetup() {
     PKGS="$MIN $MID"
     sudo $PKG_MGR $PKGS
   elif [[ `uname` == 'Darwin' ]]; then
+    echo -n "Current hostname is $(hostname) -- please suggest one (empty for no change)"
+    read newhostname < /dev/tty
+    # TODO right check
+    if [[ -z $newhostname]]; then
+      echo "No change then!"
+      sleep 1
+    else
+      sudo scutil --set HostName $newhostname
+    fi
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     if isInstalled apt-get ; then 
       PKG_MGR="brew install";
