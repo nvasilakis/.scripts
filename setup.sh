@@ -16,23 +16,20 @@ CURL_EXEC=$(which curl > /dev/null && echo '0' || echo '1')
 MIN="git"
 MID="zsh screen htop"
 MAX="autoconf libncurses5-dev"
-TRY_UPGRADE="True"
 ABS_MIN="https://github.com/nvasilakis/dotrc/archive/master.zip"
 PKG_MGR=""
 OVER_HTTP="False";
+FULL_INSTALL="True";
 
 usage () {
   cat <<EOF
-  Setup environment based on nikos.vasilak.is/rc, after backing up
+  Setup environment first time.
 
-    ./${0} [--{min,mid,max}] [--help]
+    ./${0} [-c]
 
-    will download environment from github
-    * min  will install minimum required packages (git)
-        -- if this is not available, will fall back to http
-    * mid  will include zsh, screen and htop on Linux
-    * max  will compile latest stable gnu screen
-    * help shows this message
+    will download and setup environment from github
+    * -c: cleans up existing setup
+    * -h: shows this message
 EOF
 }
 
@@ -94,21 +91,19 @@ done
 
 # TODO: If OS X set up brew, install patched screen
 
-if [[ `uname` == 'Linux' ]]; then
-  echo -n "Do you also want to try upgrade?[Y/n]"
-  read pls < /dev/tty
-  if [[ $pls == 'n' || $pls == 'N' ]]; then
-    TRY_UPGRADE='False'
-  fi
-fi
-
 echo -n "Default is git over ssh -- prefer http?[y/N]"
 read pls < /dev/tty
 if [[ $pls == 'y' || $pls == 'Y' ]]; then
   OVER_HTTP="True";
 fi
 
-icheck () {
+echo -n "Do you want full install? (e.g., vim, git, zsh, screen, updates) [Y/n]"
+read pls < /dev/tty
+if [[ $pls == 'n' || $pls == 'N' ]]; then
+  FULL_INSTALL="False";
+fi
+
+check () {
   sudo apt-get install "$1" || echo "Install $1";
 }
 
@@ -156,30 +151,43 @@ getConfig () {
   linkEm
 }
 
-main () {
+## Set up package managers and everything
+## Currently tested with debian-based and os x
+presetup() {
   if [[ `uname` == 'Linux' ]]; then
     if isInstalled apt-get ; then 
-      echo "Found apt-get, updating"
       sudo apt-get update 
-      if [[ $TRY_UPGRADE == 'True' ]]; then
+      if [[ $FULL_INSTALL == 'True' ]]; then
        sudo apt-get upgrade
       fi
       PKG_MGR="apt-get install -y ";
     elif isInstalled yum ; then 
-      PKG_MGR="yum";
+      PKG_MGR="yum install";
     elif isInstalled pacman ; then 
-      PKG_MGR="pacman"
+      PKG_MGR="pacman install"
     elif isInstalled emerge ; then 
-      PKG_MGR="emerge"
+      PKG_MGR="emerge install"
     elif isInstalled zypp ; then 
-      PKG_MGR="zypp"
+      PKG_MGR="zypp install"
     fi
+    PKGS="$MIN $MID"
+    sudo $PKG_MGR $PKGS
   elif [[ `uname` == 'Darwin' ]]; then
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     if isInstalled apt-get ; then 
-      PKG_MGR="brew";
+      PKG_MGR="brew install";
     fi
+    PKGS="$MIN $MID automake"
+    brew install $PKGS
+    git clone https://github.com/FreedomBen/screen-for-OSX.git &&
+    cd screen-for-OSX &&
+    ./install.sh &&
+    cd .. &&
+    rm -rf screen-for-OSX
   fi
+}
 
+setup () {
   # Most probably OSX, and if true, will use curl
   if [[ $PKG_MGR == "" ]]; then
     echo 'Could not find package manager,' 
@@ -192,11 +200,8 @@ main () {
       getConfig
     fi
   else
-    echo 'FIXME: min|mid|max'
-    PKGS="$MIN $MID" #FIXME
-    sudo $PKG_MGR $PKGS
     getConfig
   fi
 }
 
-main
+setup
