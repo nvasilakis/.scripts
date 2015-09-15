@@ -61,10 +61,8 @@ function backup {
 fetch () {
   if [[ $WGET_EXEC == '0' ]]; then
     wget $1
-    linkEm
   elif [[ $CURL_EXEC == '0' ]]; then
     curl -LOk $1
-    linkEm
   else
     echo 'You have neither curl nor wget, what else can we do than abort?'
     exit -1
