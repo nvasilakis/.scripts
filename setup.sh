@@ -174,7 +174,7 @@ presetup() {
     echo -n "Current hostname is $(hostname) -- please suggest one (empty for no change)"
     read newhostname < /dev/tty
     # TODO right check
-    if [[ -z $newhostname]]; then
+    if [[ $newhostname == "" ]]; then
       echo "No change then!"
       sleep 1
     else
