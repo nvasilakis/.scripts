@@ -112,6 +112,33 @@ check_install () {
   done
 }
 
+prompt_start () {
+  echo '****************************************'
+  echo 'please add the key NOW to github account'
+  echo '****************************************'
+}
+
+prompt_end () {
+  echo 'installation complete'
+  echo '*****************************************'
+  echo '* update your remote servers by running:*'
+  echo '* ssh-copy-id -i user@remotehost.smt    *'
+  echo '*****************************************'
+}
+
+reg_key () {
+  curl https://github.com/b4b4r07/ssh-keyreg/blob/master/bin/ssh-keyreg -o ssh-keyreg && 
+    chmod +x ./ssh-keyreg &&
+    ssh-keyreg --path id_rsa.rub github
+}
+
+gen_key () {
+# should return appropriate result 
+  ssh-keygen -t rsa -f ~/.ssh/id_rsa -C `whoami`@`uname -n` &&
+    reg_key &&
+    ssh-add ~/.ssh/id_rsa
+}
+
 linkEm () {
   for i in $FILES; do
     echo "installing: ~/.dotrc/$i ~/$i"
@@ -121,10 +148,8 @@ linkEm () {
 }
 
 getConfig () {
-  echo "Trying to generate and setup keys"
-  fetch https://raw.github.com/nvasilakis/scripts/master/setup-keys.sh
-  chmod +x setup-keys.sh
-  ./setup-keys.sh
+  gen_key
+  reg_key
   if [[ $OVER_HTTP == "False" ]]; then # if success
     git clone git@github.com:nvasilakis/immateriia.git ${VIM}
     git clone git@github.com:nvasilakis/scripts.git    ${SCRIPTS}
