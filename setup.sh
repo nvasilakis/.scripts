@@ -44,7 +44,7 @@ clean () {
  rm -rf ${EMACS}
  rm -rf ${SHELL}
  for f in $FILES; do
-   touch "~/${f}" && rm "~/${f}"
+   rm ~/${f}
  done
 }
 
@@ -89,17 +89,17 @@ done
 
 # TODO: If OS X set up brew, install patched screen
 
-echo -n "Default is git over ssh -- prefer http?[y/N]"
-read pls < /dev/tty
-if [[ $pls == 'y' || $pls == 'Y' ]]; then
-  OVER_HTTP="True";
-fi
+#echo -n "Default is git over ssh -- prefer http?[y/N]"
+#read pls < /dev/tty
+#if [[ $pls == 'y' || $pls == 'Y' ]]; then
+#  OVER_HTTP="True";
+#fi
 
-echo -n "Do you want full install? (e.g., vim, git, zsh, screen, updates) [Y/n]"
-read pls < /dev/tty
-if [[ $pls == 'n' || $pls == 'N' ]]; then
-  FULL_INSTALL="False";
-fi
+#echo -n "Do you want full install? (e.g., vim, git, zsh, screen, updates) [Y/n]"
+#read pls < /dev/tty
+#if [[ $pls == 'n' || $pls == 'N' ]]; then
+#  FULL_INSTALL="False";
+#fi
 
 check () {
   sudo apt-get install "$1" || echo "Install $1";
@@ -112,29 +112,20 @@ check_install () {
   done
 }
 
-prompt_start () {
-  echo '****************************************'
-  echo 'please add the key NOW to github account'
-  echo '****************************************'
-}
-
-prompt_end () {
-  echo 'installation complete'
-  echo '*****************************************'
-  echo '* update your remote servers by running:*'
-  echo '* ssh-copy-id -i user@remotehost.smt    *'
-  echo '*****************************************'
-}
-
 reg_key () {
-  curl https://github.com/b4b4r07/ssh-keyreg/blob/master/bin/ssh-keyreg -o ssh-keyreg && 
-    chmod +x ./ssh-keyreg &&
-    ssh-keyreg --path id_rsa.rub github
+  desc="$(date +%D)"
+  user="nvasilakis"
+  # Cannot quote because shell won't expand `~`!
+  path=~/.ssh/id_rsa.pub
+  title="$(whoami) $(uname -n) ($desc)"
+  key_data="$(cat "$path")"
+  curl -u "${user:=$USER}" \
+    --data "{\"title\":\"$title\",\"key\":\"$key_data\"}" \
+    https://api.github.com/user/keys
 }
 
 gen_key () {
-# should return appropriate result 
-  ssh-keygen -t rsa -f ~/.ssh/id_rsa -C `whoami`@`uname -n` &&
+  ssh-keygen -t rsa -f ~/.ssh/id_rsa -C $(whoami)@$(uname -n) &&
     reg_key &&
     ssh-add ~/.ssh/id_rsa
 }
@@ -149,7 +140,6 @@ linkEm () {
 
 getConfig () {
   gen_key
-  reg_key
   if [[ $OVER_HTTP == "False" ]]; then # if success
     git clone git@github.com:nvasilakis/immateriia.git ${VIM}
     git clone git@github.com:nvasilakis/scripts.git    ${SCRIPTS}
@@ -169,9 +159,21 @@ getConfig () {
   fi
   # cleanup
   cd ..
-  rm setup-keys.sh
   cd ~/.dotrc
   linkEm
+}
+
+osxhostname () {
+  if [ grep -c "^$(hostname)$") -eq 1 ]; then
+    echo -n "Current hostname is $(hostname) -- please suggest one (empty for no change)"
+    read newhostname < /dev/tty
+    # TODO right check
+    if [[ $newhostname == "" ]]; then
+      echo "No change then!"
+    else
+      sudo scutil --set HostName $newhostname
+    fi
+  fi
 }
 
 ## Set up package managers and everything
@@ -196,15 +198,7 @@ presetup() {
     PKGS="$MIN $MID"
     sudo $PKG_MGR $PKGS
   elif [[ `uname` == 'Darwin' ]]; then
-    echo -n "Current hostname is $(hostname) -- please suggest one (empty for no change)"
-    read newhostname < /dev/tty
-    # TODO right check
-    if [[ $newhostname == "" ]]; then
-      echo "No change then!"
-      sleep 1
-    else
-      sudo scutil --set HostName $newhostname
-    fi
+    osxhostname
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     if isInstalled apt-get ; then 
       PKG_MGR="brew install";
