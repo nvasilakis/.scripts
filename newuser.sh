@@ -1,14 +1,14 @@
-USER=${USER:-false}
+NUSER=${NUSER:-false}
 
-if [[ $USER == 'false' ]]; then
-  echo '$USER not set; exiting..'
+if [[ $NUSER == 'false' ]]; then
+  echo '$NUSER not set; exiting..'
 fi
 
-sudo adduser $USER
-sudo mkdir ~/../$USER/.ssh
+sudo adduser $NUSER
+sudo mkdir ~/../$NUSER/.ssh
 
 # This assumes you have id_rsa.pub -- maybe check?
 
-sudo cp id_rsa.pub ~/../$USER/.ssh/authorized_keys
-sudo chmod 600 ~/../$USER/.ssh/authorized_keys
-sudo chown "${USER}":"${USER}" ~/../$USER/.ssh/authorized_keys
+sudo cp id_rsa.pub ~/../$NUSER/.ssh/authorized_keys
+sudo chmod 600 ~/../$NUSER/.ssh/authorized_keys
+sudo chown "${NUSER}":"${NUSER}" ~/../$NUSER/.ssh/authorized_keys
