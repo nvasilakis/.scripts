@@ -22,8 +22,7 @@ then
   sudo chown -R $u:$u /home/$u/.ssh
   sudo chmod 700 /home/$u/.ssh
   sudo chmod 600 /home/$u/.ssh/authorized_keys
-  sudo cat /home/$u/.ssh/*
-  echo "If expected, run 'rm ~/$u.pub'."
+  sudo cat /home/$u/.ssh/authorized_keys
 else
   echo "There is no ~/$u.pub!"
   exit 0
