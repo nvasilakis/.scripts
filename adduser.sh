@@ -5,8 +5,15 @@
 # It creates a new user and copies their public
 # key from ~/<name>.pub.
 
+
 if [ "$#" -ne 1 ]; then
   echo "Try ./$0 <user>, assuming ~/<user>.pub exists"
+  cat << EOF
+Please send me your ssh public key, which should be the file
+~/.ssh/id_rsa.pub; if this file doesn't exist, you can create it by
+following instructions online, such as https://git.io/JeuCN .
+Please attach to an email with name <username-you-want>.pub---thanks!
+EOF
   exit 0
 fi
 
