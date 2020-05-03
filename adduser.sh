@@ -6,7 +6,7 @@
 # Expects public key as ~/<username>.pub
 
 
-if [ "$#" -le 1 ]; then
+if [ "$#" -eq 0 ]; then
   echo "Try ./$0 <user> [password], assuming ~/<user>.pub exists"
   cat << EOF
 Please send me your ssh public key, which should be the file
