@@ -1,27 +1,23 @@
 #!/bin/bash
 
 SYSTEM="$(uname)"
-VIM=~/.vim/
-SCRIPTS=~/scripts/
-EMACS=~/.emacs.d/
-SHELL=~/.dotrc/
-FILES=".bashrc .conkyrc .hgrc .irbrc .vimrc .zshrc .pythonrc .emacs";
-FILES="${FILES} .screenrc .pentadactylrc  .gitconfig .Xdefaults .ss";
-FILES="${FILES} .ocamlinit";
+REPOS=".dotrc .vim .emacs.d .scripts";
+RC=".bashrc .conkyrc .hgrc .irbrc .vimrc .zshrc .pythonrc .screenrc .emacs";
+RC="${RC} .ocamlinit .pentadactylrc  .gitconfig .Xdefaults .ss";
 BAK=".rc_backups"
 GIT_EXEC=$(which git > /dev/null && echo '0' || echo '1')
 WGET_EXEC=$(which wget > /dev/null && echo '0' || echo '1')
 CURL_EXEC=$(which curl > /dev/null && echo '0' || echo '1')
 # Packages to install -- git is the absolute minimum
-MIN="git"
-MID="zsh screen htop"
-MAX="autoconf libncurses5-dev"
+SW="git zsh screen htop autoconf libncurses5-dev"
+
+
 ABS_MIN="https://github.com/nvasilakis/dotrc/archive/master.zip"
 PKG_MGR=""
-OVER_HTTP="False";
+PROTOCOL="${PROTOCOL:-git}"; # can override with HTTP
 FULL_INSTALL="True";
 
-usage () {
+usage() {
   cat <<EOF
   Setup environment first time.
 
@@ -33,24 +29,27 @@ usage () {
 EOF
 }
 
-isInstalled () {
+isInstalled() {
   [ -x "$(which $1)" ]
 }
 
 #cleanup everything
-clean () {
- rm -rf ${VIM}
- rm -rf ${SCRIPTS}
- rm -rf ${EMACS}
- rm -rf ${SHELL}
- for f in $FILES; do
-   rm ~/${f}
- done
+clean() {
+  for d in $REPOS; do
+    rm -rf $d
+  done
+
+  for f in $RC; do
+    echo removing $f
+    rm ~/${f}
+  done
+
+  # Restore from backup 
+  cp ~/$BAK/*/.*rc  ~/
 }
 
-# Keep a backup of everything, in case we need to rollback
-# N.b.: only .*rc files
-function backup {
+# Keep a backup of .*rc, in case we need to rollback
+backup() {
   dt=$(date "+%Y.%m.%d.%H.%M.%S")
   echo "Backing up .*rc files in $BAK/$dt"
   mkdir -p ~/$BAK/$dt
@@ -58,7 +57,7 @@ function backup {
   echo "Backup complete"
 }
 
-fetch () {
+fetch() {
   if [[ $WGET_EXEC == '0' ]]; then
     wget $1
   elif [[ $CURL_EXEC == '0' ]]; then
@@ -92,7 +91,7 @@ done
 #echo -n "Default is git over ssh -- prefer http?[y/N]"
 #read pls < /dev/tty
 #if [[ $pls == 'y' || $pls == 'Y' ]]; then
-#  OVER_HTTP="True";
+#  PROTOCOL="True";
 #fi
 
 #echo -n "Do you want full install? (e.g., vim, git, zsh, screen, updates) [Y/n]"
@@ -101,18 +100,20 @@ done
 #  FULL_INSTALL="False";
 #fi
 
-check () {
+check() {
   sudo apt-get install "$1" || echo "Install $1";
 }
 
-check_install () {
+check_install() {
   for prog; do
     #echo "Install ${prog}"
     command -v "${prog}" >/dev/null 2>&1 || { icheck "${prog}"; }
   done
 }
 
-reg_key () {
+gen_key() {
+  ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa -C $(whoami)@$(uname -n)
+
   desc="$(date +%D)"
   user="nvasilakis"
   # Cannot quote because shell won't expand `~`!
@@ -122,48 +123,41 @@ reg_key () {
   curl -u "${user:=$USER}" \
     --data "{\"title\":\"$title\",\"key\":\"$key_data\"}" \
     https://api.github.com/user/keys
+    # ssh-add ~/.ssh/id_rsa
 }
 
-gen_key () {
-  ssh-keygen -t rsa -f ~/.ssh/id_rsa -C $(whoami)@$(uname -n) &&
-    reg_key &&
-    ssh-add ~/.ssh/id_rsa
-}
-
-linkEm () {
-  for i in $FILES; do
-    echo "installing: ~/.dotrc/$i ~/$i"
+config() {
+  if [[ $PROTOCOL == "git" ]]; then
+    gen_key
+    for d in $REPOS; do
+      git clone git@github.com:nvasilakis/$d.git $d
+    done
+  else
+    for d in $REPOS; do
+      git clone https://github.com/nvasilakis/$d.git $d
+    done
+  fi
+	cd ~/.vim
+	git submodule update --init
+  for i in $RC; do
     rm -rf ~/$i
     ln -s ~/.dotrc/$i ~/$i
   done
-}
 
-getConfig () {
-  gen_key
-  if [[ $OVER_HTTP == "False" ]]; then # if success
-    git clone git@github.com:nvasilakis/immateriia.git ${VIM}
-    git clone git@github.com:nvasilakis/scripts.git    ${SCRIPTS}
-    git clone git@github.com:nvasilakis/.emacs.d.git   ${EMACS}
-    git clone git@github.com:nvasilakis/dotrc.git      ${SHELL}
-    cd ~/.vim
-    echo 'updating submodules'
-    git submodule update --init
+  if [[ `uname` == 'Linux' ]]; then
+    sudo apt install unzip
+    git clone git@github.com:chrishantha/install-java.git
+    cd install-java
+    wget http://nikos.vasilak.is/sw/jdk-8u251-linux-x64.tar.gz
+    cat <(echo 'y') <(echo 'n') | sudo ./install-java.sh -f ./jdk-8u251-linux-x64.tar.gz 
+    cd ..
+    rm -rf install-java
   else
-    git clone https://github.com/nvasilakis/immateriia.git ${VIM}
-    git clone https://github.com/nvasilakis/scripts.git    ${SCRIPTS}
-    git clone https://github.com/nvasilakis/.emacs.d.git   ${EMACS}
-    git clone https://github.com/nvasilakis/dotrc.git      ${SHELL}
-    cd ~/.vim
-    echo 'updating submodules'
-    git submodule update --init
+    echo install JDK8: http://nikos.vasilak.is/sw/jdk-8u251-macosx-x64.dmg
   fi
-  # cleanup
-  cd ..
-  cd ~/.dotrc
-  linkEm
 }
 
-osxhostname () {
+osxhostname() {
   if [ grep -c "^$(hostname)$" -eq 1 ]; then
     echo -n "Current hostname is $(hostname) -- please suggest one (empty for no change)"
     read newhostname < /dev/tty
@@ -182,9 +176,7 @@ presetup() {
   if [[ `uname` == 'Linux' ]]; then
     if isInstalled apt-get ; then 
       sudo apt-get update 
-      if [[ $FULL_INSTALL == 'True' ]]; then
-       sudo apt-get upgrade
-      fi
+      sudo apt-get upgrade
       PKG_MGR="apt-get install -y ";
     elif isInstalled yum ; then 
       PKG_MGR="yum install";
@@ -195,7 +187,6 @@ presetup() {
     elif isInstalled zypp ; then 
       PKG_MGR="zypp install"
     fi
-    PKGS="$MIN $MID"
     sudo $PKG_MGR $PKGS
   elif [[ `uname` == 'Darwin' ]]; then
     osxhostname
@@ -205,12 +196,16 @@ presetup() {
     fi
     PKGS="$MIN $MID automake"
     brew install $PKGS
-    git clone https://github.com/FreedomBen/screen-for-OSX.git &&
-    cd screen-for-OSX &&
-    ./install.sh &&
-    cd .. &&
-    sudo cp /usr/local/bin/screen /usr/bin/screen &&
-    rm -rf screen-for-OSX
+    git clone git://git.savannah.gnu.org/screen.git
+    cd screen/src
+    mkdir -p /opt/etc
+    mv etc/etcscreenrc /opt/etc/screenrc
+    ./autogen.sh
+    ./configure --prefix=/opt/Cellar/screen/3.6.0  --enable-colors256 --with-sys-screenrc=/opt/etc/screenrc
+    make
+    make install
+    brew link screen
+    rm -rf screen
   fi
 }
 
