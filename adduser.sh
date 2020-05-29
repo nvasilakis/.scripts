@@ -6,8 +6,8 @@
 # Expects public key as ~/<username>.pub
 
 
-if [ "$#" -le 1 ]; then
-  echo "Try ./$0 <user> [password], assuming ~/<user>.pub exists"
+if [ "$#" -eq 0 ]; then
+  echo "Try $0 <user> [password], assuming ~/<user>.pub exists"
   cat << EOF
 Please send me your ssh public key, which should be the file
 ~/.ssh/id_rsa.pub; if this file doesn't exist, you can create it by
@@ -18,12 +18,12 @@ EOF
 fi
 
 u=$1 
-p="${2:-$(openssl rand -base64 12)}"
+p="${2:-$(openssl rand -base64 32 | tr -dc A-Za-z0-9 | head -c 8)}"
 
 if [ -e ~/$u.pub ]
 then
   echo "Creating user $u"
-  sudo adduser --disabled-password $u
+  # sudo adduser --disabled-password $u
   sudo mkdir /home/$u/.ssh
   sudo touch /home/$u/.ssh/authorized_keys
   sudo mv ~/$u.pub /home/$u/.ssh/authorized_keys
