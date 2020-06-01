@@ -9,10 +9,12 @@
 if [ "$#" -eq 0 ]; then
   echo "Try $0 <user> [password], assuming ~/<user>.pub exists"
   cat << EOF
-Please send me your ssh public key, which should be the file
-~/.ssh/id_rsa.pub; if this file doesn't exist, you can create it by
-following instructions online, such as https://git.io/JeuCN .
-Please attach to an email with name <username-you-want>.pub---thanks!
+To give you access to a set of servers, please send me (i) the username you want
+to  use to  log  into  these servers  (ii)  your public  ssh  key,  as an  email
+attachment named  "<username-you-want>.pub". Your ssh  public key should  be the
+file  ~/.ssh/id_rsa.pub; if  this  file  doesn't exist,  you  can  create it  by
+following instructions  online, such  as https://git.io/JeuCN (but  you probably
+have it, if you have a GitHub account).
 EOF
   exit 0
 fi

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$#" -ne 1 ]; then
-  echo "Try ./$0 <user> [password], assuming ~/<user>.pub exists"
+  echo "Try $0 <user> [password], assuming ~/<user>.pub exists"
   exit 1
 fi
 
