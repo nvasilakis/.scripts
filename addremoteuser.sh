@@ -1,5 +1,7 @@
 #!/bin/bash
 
+stars="lifestar.ndr.md deathstar.ndr.md memstar.ndr.md beta.ndr.md gamma.ndr.md delta.ndr.md";
+
 if [ "$#" -ne 1 ]; then
   echo "Try $0 <user> [password], assuming ~/<user>.pub exists"
   exit 1
