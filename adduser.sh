@@ -25,7 +25,7 @@ p="${2:-$(openssl rand -base64 32 | tr -dc A-Za-z0-9 | head -c 8)}"
 if [ -e ~/$u.pub ]
 then
   echo "Creating user $u"
-  # sudo adduser --disabled-password $u
+  sudo adduser --disabled-password $u
   sudo mkdir /home/$u/.ssh
   sudo touch /home/$u/.ssh/authorized_keys
   sudo mv ~/$u.pub /home/$u/.ssh/authorized_keys
