@@ -38,7 +38,7 @@ then
   echo "Created account $u:$p ."
   # echo "If expected, run 'rm ~/$u.pub'."
 else
-  echo "There is no ~/$u.pub!"
+  echo There is no ~/$u.pub
   exit 0
 fi
 
