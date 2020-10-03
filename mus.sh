@@ -1,6 +1,7 @@
 #!/bin/bash
 # ./mus.sh <session-name> <user>
 
+# https://unix.stackexchange.com/a/163878
 if [ "$#" -eq 2 ]; then
   # if /var/run/screen not 755
   # sudo chmod 755 /var/run/screen
