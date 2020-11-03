@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO: Need to create a minimal setup-git/rc script for downloading configuration and setting up files on a machine without root privileges.
+
 SYSTEM="$(uname)"
 REPOS=".dotrc .vim .emacs.d .scripts";
 RC=".bashrc .conkyrc .hgrc .irbrc .vimrc .zshrc .pythonrc .screenrc .emacs";
