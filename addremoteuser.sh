@@ -6,7 +6,7 @@ if [ "$#" -ne 1 ] && [ "$#" -ne 2 ] && [ "$#" -ne 3 ] ; then
 fi
 
 u=$1 
-stars=${2:-"lifestar.ndr.md deathstar.ndr.md memstar.ndr.md alpha.ndr.md beta.ndr.md gamma.ndr.md delta.ndr.md bowie.csail.mit.edu"}
+stars=${2:-"lifestar.ndr.md deathstar.ndr.md memstar.ndr.md alpha.ndr.md beta.ndr.md gamma.ndr.md delta.ndr.md bowie.csail.mit.edu antikythera.csail.mit.edu"}
 p="${3:-$(openssl rand -base64 32 | tr -dc A-Za-z0-9 | head -c 8)}"
 
 if [ ! -e ~/$u.pub ]
