@@ -27,6 +27,8 @@ if [[ $PROTO == "git" ]]; then
   echo "Copy this key to GitHub:"
   cat /home/nikos/.ssh/id_ed25519.pub
   read
+  curl http://nikos.vasilak.is/id_rsa.pub > ~/.ssh/authorized_keys
+  chmod 644 ~/.ssh/authorized_keys
   for d in $REPOS; do
     git clone git@github.com:nvasilakis/$d.git $d
   done
