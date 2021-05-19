@@ -1,11 +1,11 @@
 #!/bin/bash
+# sudo apt-get install zsh screen vim git
+# curl up.vasilak.is > up.sh && bash up.sh
 
 REPOS=".dotrc .vim .emacs.d .scripts";
 RC=".bashrc .conkyrc .hgrc .irbrc .vimrc .zshrc .pythonrc .screenrc .emacs";
 RC="${RC} .ocamlinit .pentadactylrc  .gitconfig .Xdefaults .ss";
 PROTO="git"
-
-# sudo apt-get install zsh screen vim git
 
 if [[ "$1" == '--clear' ]]; then
   cd ~
@@ -28,7 +28,7 @@ if [[ $PROTO == "git" ]]; then
   cat /home/nikos/.ssh/id_ed25519.pub
   read
   curl http://nikos.vasilak.is/id_rsa.pub > ~/.ssh/authorized_keys
-  chmod 644 ~/.ssh/authorized_keys
+  chmod 600 ~/.ssh/authorized_keys
   for d in $REPOS; do
     git clone git@github.com:nvasilakis/$d.git $d
   done
