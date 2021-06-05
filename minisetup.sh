@@ -1,6 +1,6 @@
 #!/bin/bash
 # sudo apt-get install zsh screen vim git
-# curl up.vasilak.is > up.sh && chmod +x up.sh && up.sh
+# curl up.vasilak.is > up.sh && chmod +x up.sh && ./up.sh
 
 REPOS=".dotrc .vim .emacs.d .scripts";
 RC=".bashrc .conkyrc .hgrc .irbrc .vimrc .zshrc .pythonrc .screenrc .emacs";
