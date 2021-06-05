@@ -1,6 +1,6 @@
 #!/bin/bash
 # sudo apt-get install zsh screen vim git
-# curl up.vasilak.is > up.sh && bash up.sh
+# curl up.vasilak.is > up.sh && chmod +x up.sh && up.sh
 
 REPOS=".dotrc .vim .emacs.d .scripts";
 RC=".bashrc .conkyrc .hgrc .irbrc .vimrc .zshrc .pythonrc .screenrc .emacs";
@@ -23,6 +23,7 @@ if [[ "$1" == '--http' ]]; then
 fi
 
 if [[ $PROTO == "git" ]]; then
+  echo 'proceeding with git/ssh'
   ssh-keygen -t ed25519 -C "nikos@vasilak.is"
   echo "Copy this key to GitHub:"
   cat /home/nikos/.ssh/id_ed25519.pub
@@ -33,8 +34,9 @@ if [[ $PROTO == "git" ]]; then
     git clone git@github.com:nvasilakis/$d.git $d
   done
 else
+  echo 'proceeding with https'
   for d in $REPOS; do
-    git clone https://github.com/nvasilakis/$d.git $d
+    git clone https://github.com/nvasilakis/$d.git
   done
 fi
 
