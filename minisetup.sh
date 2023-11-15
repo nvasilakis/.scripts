@@ -1,6 +1,6 @@
 #!/bin/bash
-# sudo apt-get install zsh screen vim git
-# curl up.vasilak.is > up.sh && chmod +x up.sh && ./up.sh
+# sudo apt install zsh screen vim git
+# curl nikos.vasilak.is/up > up && chmod +x up && ./up
 
 REPOS=".dotrc .vim .emacs.d .scripts";
 RC=".bashrc .conkyrc .hgrc .irbrc .vimrc .zshrc .pythonrc .screenrc .emacs";
@@ -18,27 +18,16 @@ if [[ "$1" == '--clear' ]]; then
   exit
 fi
 
-if [[ "$1" == '--http' ]]; then
-  PROTO="http"
-fi
-
-if [[ $PROTO == "git" ]]; then
-  echo 'proceeding with git/ssh'
-  ssh-keygen -t ed25519 -C "nikos@vasilak.is"
-  echo "Copy this key to GitHub:"
-  cat /home/nikos/.ssh/id_ed25519.pub
-  read
-  curl http://nikos.vasilak.is/id_rsa.pub > ~/.ssh/authorized_keys
-  chmod 600 ~/.ssh/authorized_keys
-  for d in $REPOS; do
-    git clone git@github.com:nvasilakis/$d.git $d
-  done
-else
-  echo 'proceeding with https'
-  for d in $REPOS; do
-    git clone https://github.com/nvasilakis/$d.git
-  done
-fi
+echo 'proceeding with git/ssh'
+ssh-keygen -t ed25519 -C "nikos@vasilak.is"
+echo "Copy this key to GitHub:"
+cat /home/nikos/.ssh/id_ed25519.pub
+read
+curl http://nikos.vasilak.is/id_rsa.pub >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+for d in $REPOS; do
+  git clone git@github.com:nvasilakis/$d.git $d
+done
 
 cd ~/.vim
 git submodule update --init
